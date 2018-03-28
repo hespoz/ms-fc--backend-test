@@ -11,6 +11,8 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import static org.mockito.Mockito.when;
+
 public class TweetServiceTest {
     private EntityManager entityManager;
     private MetricWriter metricWriter;
@@ -35,4 +37,24 @@ public class TweetServiceTest {
     public void shouldThrowAnExceptionWhenTweetLengthIsInvalid() throws Exception {
         tweetService.publishTweet("Pirate", "LeChuck? He's the guy that went to the Governor's for dinner and never wanted to leave. He fell for her in a big way, but she told him to drop dead. So he did. Then things really got ugly.");
     }
+
+
+    @Test
+    public void shouldDiscardTweet() throws Exception {
+
+        final String tweetId = "1";
+
+        Tweet tweet = new Tweet();
+        tweet.setId(1l);
+        tweet.setPublisher("ApaYCan");
+        tweet.setTweet("Repampanos!");
+
+        when(entityManager.find(Tweet.class, Long.parseLong(tweetId))).thenReturn(tweet);
+
+        tweetService.discardTweet(tweetId);
+
+        verify(entityManager).persist(any(Tweet.class));
+
+    }
+
 }
