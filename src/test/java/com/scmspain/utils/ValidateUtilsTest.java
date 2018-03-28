@@ -15,6 +15,9 @@ public class ValidateUtilsTest {
     private static final String ORIGINAL_TWEET = "We are Schibsted Spain (look at our home page http://www.schibsted.es/ ), we own Vibbo, InfoJobs, fotocasa, coches.net and milanuncios. Welcome!";
     private static final String CLEAN_TWEET = "We are Schibsted Spain (look at our home page  ), we own Vibbo, InfoJobs, fotocasa, coches.net and milanuncios. Welcome!";
 
+    private static final String LONG_TWEET_140 = "We are Schibsted Spain (look at our home page), we own Vibbo, InfoJobs, fotocasa, coches.net and milanuncios. Welcome!gsdgsdfafwerqrqwerwer1";
+    private static final String LONG_TWEET_141 = "We are Schibsted Spain (look at our home page), we own Vibbo, InfoJobs, fotocasa, coches.net and milanuncios. Welcome!gsdgsdfafwerqrqwerwer11";
+
     //Tests for ValidateUtils.cleanTweet
     @Test
     public void shouldGetExpectedCleanString() throws Exception {
@@ -42,6 +45,8 @@ public class ValidateUtilsTest {
     @Test
     public void shouldTweetPassValidation() throws Exception {
         assertTrue(ValidateUtils.isValidTweet(ORIGINAL_TWEET));
+        assertTrue(ValidateUtils.isValidTweet(LONG_TWEET_140));
+        assertFalse(ValidateUtils.isValidTweet(LONG_TWEET_141));
     }
 
 

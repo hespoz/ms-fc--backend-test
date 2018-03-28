@@ -18,7 +18,7 @@ public class ValidateUtils {
 
     public static boolean isValidTweet(String text) {
         String clearedStr = cleanTweet(text);
-        return clearedStr.length() > 0 && clearedStr.length() < 140;
+        return clearedStr.length() > 0 && clearedStr.length() <= 140;
     }
 
     public static boolean nonEmpty(String text) {
