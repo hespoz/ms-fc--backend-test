@@ -1,6 +1,7 @@
 package com.scmspain.services;
 
 import com.scmspain.entities.Tweet;
+import com.scmspain.utils.TweetValidationUtils;
 import com.scmspain.utils.ValidateUtils;
 import org.springframework.boot.actuate.metrics.writer.Delta;
 import org.springframework.boot.actuate.metrics.writer.MetricWriter;
@@ -18,10 +19,13 @@ import java.util.Optional;
 public class TweetService {
     private EntityManager entityManager;
     private MetricWriter metricWriter;
+    private TweetValidationUtils tweetValidationUtils;
+
 
     public TweetService(EntityManager entityManager, MetricWriter metricWriter) {
         this.entityManager = entityManager;
         this.metricWriter = metricWriter;
+        tweetValidationUtils = new TweetValidationUtils();
     }
 
     /**
@@ -33,11 +37,11 @@ public class TweetService {
     public Tweet publishTweet(String publisher, String text) {
 
         //We can work more in the validation methods a DTOs with a list of errors.
-        if(!ValidateUtils.nonEmpty(publisher)) {
+        if(!tweetValidationUtils.nonEmpty(publisher)) {
             throw new IllegalArgumentException("Publisher can not be null");
         }
 
-        if(!ValidateUtils.isValidTweet(text)) {
+        if(!tweetValidationUtils.isValidTweet(text)) {
             throw new IllegalArgumentException("Tweet must not be greater than 140 characters");
         }
 
@@ -59,7 +63,7 @@ public class TweetService {
      */
     public Tweet discardTweet(String tweetId) {
 
-        if (!ValidateUtils.isValidTweet(tweetId)) {
+        if (!tweetValidationUtils.isValidTweet(tweetId)) {
             throw new IllegalArgumentException("Wrong id, should be a number");
         }
 
